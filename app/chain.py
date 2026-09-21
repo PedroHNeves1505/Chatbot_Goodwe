@@ -1,9 +1,9 @@
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from prompts import SYSTEM_PROMPT
-from schemas import AnaliseConsulta, RelatorioSessao, RespostaChat, AvaliarResposta, MetaPrompt
-from memory_manager import memoria_buffer
+from .prompts import SYSTEM_PROMPT
+from .schemas import AnaliseConsulta, RespostaChat
+from .memory_manager import memoria_buffer
 import tiktoken
 import os
 from dotenv import load_dotenv
