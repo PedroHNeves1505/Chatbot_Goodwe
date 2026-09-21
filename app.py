@@ -1,10 +1,11 @@
 import os
 from flask import Flask, render_template, request, jsonify, session
 from dotenv import load_dotenv
-from app.chain import executar_chatbot
-from app.memory_manager import memoria_buffer
+from src.chain.builder import executar_chatbot
+from src.chain.memoria import memoria_buffer
 import tiktoken
-
+from src.guardrails.moderation import verificar_moderacao
+from src.guardrails.scope_validator import validar_escopo
 
 load_dotenv()
 
@@ -27,6 +28,27 @@ def enviar_mensagem():
     try:
         data = request.get_json()
         mensagem_usuario = data.get("mensagem", "")
+        
+        if not mensagem_usuario.strip():
+            return jsonify({"resposta": "Por favor, digite uma mensagem válida."}), 400
+        
+        mod_check = verificar_moderacao(mensagem_usuario)
+        if not mod_check["aprovado"]:
+            resposta_bloqueio = "Desculpe, não posso processar este tipo de solicitação por motivos de segurança."
+            tokens_bloqueio = contar_tokens(resposta_bloqueio)
+            return jsonify({
+                "resposta": resposta_bloqueio,
+                "tokens_pergunta": contar_tokens(mensagem_usuario),
+                "tokens_resposta": tokens_bloqueio
+            }), 200
+        
+        if not validar_escopo(mensagem_usuario):
+            resposta_fora = "Desculpe, como assistente do ecossistema GoodWe, só posso ajudar com questões sobre ChargeGrid Intelligence e EV ChargeOps."
+            return jsonify({
+                "resposta": resposta_fora,
+                "tokens_pergunta": contar_tokens(mensagem_usuario),
+                "tokens_resposta": contar_tokens(resposta_fora)
+            }), 200
         
         if not mensagem_usuario:
             return jsonify({"resposta": "Por favor, digite uma mensagem válida."}), 400

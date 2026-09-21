@@ -1,9 +1,9 @@
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from .prompts import PROMPT_ANALISE, PROMPT_RESPOSTA
-from .schemas import AnaliseConsulta, RespostaChat
-from .memory_manager import memoria_buffer
+from ..prompts import PROMPT_ANALISE, PROMPT_RESPOSTA
+from ..schemas import AnaliseConsulta, RespostaChat
+from .memoria import memoria_buffer
 import os
 from dotenv import load_dotenv
 
