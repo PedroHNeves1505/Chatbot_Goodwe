@@ -36,30 +36,28 @@ O projeto utiliza uma arquitetura leve, moderna e em conformidade com as boas pr
 
 * **Python 3.11+ & Flask:** Micro-framework para o servidor backend e controle de rotas.
 * **Flask Session:** Mecanismo nativo utilizado para garantir a **memória de contexto**, permitindo diálogos contínuos e coerentes.
-* **Groq API (LLM):** Integração com o modelo de altíssima velocidade `llama3-8b-8192` para respostas instantâneas guiadas por *System Prompt* estruturado com técnica de *Few-Shot Prompting*.
+* **Ollama (LLM Local)**: Integração de alta performance para inferência local orientada a dados (com suporte a modelos como Llama 3).
 * **Python-Dotenv:** Gerenciamento seguro de credenciais em ambiente local.
+* **Pydantic & PydanticOutputParser**: Validação e garantia de Structured Output, assegurando que as respostas do modelo sigam estritamente o contrato JSON da aplicação.
+* **Engenharia de Prompts Modular**: System prompts desacoplados e versionados em arquivos Markdown (.md) na pasta prompts/, garantindo legibilidade e versionamento limpo via Git.
 
 ---
 
 ## ⚙️ Variáveis de Ambiente Necessárias
 
-Para o correto funcionamento do ecossistema e proteção das credenciais, o arquivo `.env` na raiz do projeto deve conter as seguintes chaves:
-
-```env
-# Chave de Autenticação Oficial da API Groq (NUNCA deve ser exposta no código)
-GROQ_API_KEY=gsk_sua_chave_real_aqui...
-
-# Chave de criptografia utilizada pelo Flask para assinar os cookies de sessão (Memória do Chat)
-FLASK_SECRET_KEY=uma_string_aleatoria_e_segura_aqui
-```
+# Configuração do Servidor Ollama (LLM Local)
+OLLAMA_API_KEY= 'Sua chave ollama'
 
 ## 🚀 Instruções de Execução
 Siga os passos abaixo para clonar, configurar e rodar o projeto localmente
 1. Clonar o Repositório e Navegar até a Pasta
 
 ```bash
-git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-cd seu-repositorio
+git clone https://github.com/equipe31ccpj/Chatbot_Goodwe.git
+```
+
+```bash
+cd https://github.com/equipe31ccpj/Chatbot_Goodwe.git
 ```
 
 2. Instalar as Dependências Obrigatórias
@@ -70,7 +68,8 @@ pip install -r requirements.txt
 ```
 
 3. Configurar as Variáveis de Ambiente
-Crie um arquivo chamado .env na raiz do projeto e insira as chaves conforme o modelo da seção de Variáveis de Ambiente.
+Apague o .example do .env.example e adicione sua chave ollama no local indicado
+
 
 4. Iniciar o Servidor Backend
 Execute a aplicação Python. A flag --no-reload é recomendada para estabilizar a execução do terminal em determinados IDEs:
@@ -83,6 +82,11 @@ O terminal exibirá a confirmação: * Running on http://127.0.0.1:5000.
 5. Acessar a Interface
 Abra o seu navegador e acesse o endereço local:
 http://127.0.0.1:5000/
+
+6. Para fazer teste de segurança do chatbot faça essa execução no terminal:
+```bash
+python evals/run_evals.py
+```
 
 ## 💬 Exemplos de Uso (Validando a Memória de Contexto)
 O grande diferencial da Sprint 2 é a capacidade do chatbot lembrar das interações passadas. Abaixo estão exemplos de diálogos contínuos testados e validados no sistema:
