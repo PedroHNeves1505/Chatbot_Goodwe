@@ -3,14 +3,14 @@ from typing import Optional
 
 class AnaliseConsulta(BaseModel):
     pergunta: str = Field(
-        description='Entender a intenção principal do usuário'
-        )
+        description='Reescreva a pergunta exata feita pelo usuário de forma clara e limpa. NUNCA coloque frases de status como "aguardando entrada" ou saudações.'
+    )
     aprovado: bool = Field(
-        description='True se a resposta estiver correta, False caso contrário'
-        )
+        description='True se a pergunta tiver relação com os escopos da GoodWe, False caso contrário'
+    )
     motivo: str = Field(
-        description='Justificativa da aprovação ou detalhes do erro'
-        )
+        description='Justificativa breve da aprovação ou recusa'
+    )
 
 class RespostaChat(BaseModel):
     pergunta_usuario: str = Field(
@@ -25,6 +25,6 @@ class RespostaChat(BaseModel):
     topico_principal: Optional[str] = Field(
         description="Ter relação com o escopo definido do projeto"
     )
-    rascunho_resposta: str = Field(
-        description="A resposta inicial gerada pelo modelo para ser refinada pelo próximo passo."
+    resposta_final: str = Field(
+        description="Faça a repsosta final da forma mais resumida e direta ao ponto possível"
     )
