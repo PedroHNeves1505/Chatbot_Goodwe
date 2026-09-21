@@ -4,7 +4,6 @@ from langchain_core.output_parsers import PydanticOutputParser
 from .prompts import PROMPT_ANALISE, PROMPT_RESPOSTA
 from .schemas import AnaliseConsulta, RespostaChat
 from .memory_manager import memoria_buffer
-import tiktoken
 import os
 from dotenv import load_dotenv
 
@@ -14,12 +13,9 @@ load_dotenv()
 llm = ChatOllama(
     model=os.environ['OLLAMA_MODEL'],
     base_url=os.environ['OLLAMA_HOST'],
-    temperature=0
+    temperature=0,
+    num_predict=256
 )
-
-def contar_tokens(texto:str, modelo:str='gpt-4') -> int:
-    enc = tiktoken.encoding_for_model(modelo)
-    return len(enc.encode(texto))
 
 # Executa a análise da pergunta do usuário
 prompt_analise = ChatPromptTemplate.from_template(PROMPT_ANALISE + "\n\n{format_instructions}")

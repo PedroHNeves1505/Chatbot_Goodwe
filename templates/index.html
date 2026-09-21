@@ -31,17 +31,23 @@
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
 
-function appendMessage(text, sender) {
+function appendMessage(text, sender, tokens = null) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
     
-    // Se a mensagem for do bot, aplica a formatação Markdown antes de exibir
+    let conteudoHTML = '';
+
     if (sender === 'bot') {
-        messageDiv.innerHTML = formatMarkdown(text);
+        conteudoHTML = formatMarkdown(text);
     } else {
-        messageDiv.innerText = text; // Mensagem do usuário continua texto limpo
+        conteudoHTML = `<p>${text}</p>`;
     }
     
+    if (tokens !== null && sender === 'bot') {
+        conteudoHTML += `<div style="font-size: 0.75rem; color: #888; margin-top: 5px; text-align: right;">⚡ ${tokens} tokens</div>`;
+    }
+
+    messageDiv.innerHTML = conteudoHTML;
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight; 
 }
@@ -68,7 +74,7 @@ function formatMarkdown(text) {
     return html;
 }
 
-        async function sendMessage() {
+async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
 
@@ -90,10 +96,11 @@ function formatMarkdown(text) {
                     body: JSON.stringify({ mensagem: text })
                 });
 
-                const data = response.get_json ? await response.get_json() : await response.json();
+                const data = await response.json();
                 
                 chatMessages.removeChild(typingDiv);
-                appendMessage(data.resposta, 'bot');
+            
+                appendMessage(data.resposta, 'bot', data.tokens_resposta);
 
             } catch (error) {
                 chatMessages.removeChild(typingDiv);
@@ -101,10 +108,12 @@ function formatMarkdown(text) {
                 console.error('Error:', error);
             }
         }
-
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
         });
     </script>
 </body>
