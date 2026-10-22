@@ -9,7 +9,7 @@ from src.guardrails.scope_validator import validar_escopo
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
 app.secret_key = os.environ.get("OLLAMA_API_KEY")
 
 
