@@ -1,0 +1,36 @@
+{
+    "media_faithfulness": 1.0,
+    "media_answer_relevancy": 1.0,
+    "detalhes": [
+        {
+            "id": 1,
+            "pergunta": "Quais são as especificações técnicas e potência de recarga do carregador GoodWe HCA?",
+            "resposta": "O carregador GoodWe série HCA possui as seguintes especificações de potência: 7kW para monofásico e 11kW/22kW para trifásico [Fonte: 2023-11-03907711.pdf | Página: 1]. Tecnicamente, apresenta grau de proteção IP65/IP66 para uso interno e externo, integra proteções contra sobretensão, subtensão, sobrecarga, falha de aterramento e raios (SPD Tipo II integrado), além de comunicação via dongles Wi-Fi e Bluetooth [Fonte: 2023-11-03907711.pdf | Página: 1; GW_HCA-EVCharger.pdf | Página: 0]. No contexto do ChargeGrid Intelligence, a potência nominal é de 22 kW, com interrupção automática para manutenção caso a potência ultrapasse 8.8 kW [Fonte: Escopo ChargeGrid Intelligence].",
+            "scores": {
+                "faithfulness": 1.0,
+                "answer_relevancy": 1.0,
+                "tem_citacao": true
+            }
+        },
+        {
+            "id": 2,
+            "pergunta": "Qual é o limite de segurança de potência e o que acontece se for ultrapassado?",
+            "resposta": "No módulo ChargeGrid Intelligence, o limite de segurança/sobrecarga do carregador é de 8.8 kW. Caso a potência ultrapasse esse valor, o carregamento sofrerá interrupção automática para manutenção [Fonte: Escopo ChargeGrid Intelligence].",
+            "scores": {
+                "faithfulness": 1.0,
+                "answer_relevancy": 1.0,
+                "tem_citacao": true
+            }
+        },
+        {
+            "id": 3,
+            "pergunta": "Como funciona a tarifação inteligente no horário de pico?",
+            "resposta": "No módulo ChargeGrid Intelligence, a tarifação no Horário de PICO utiliza um fator multiplicador de 1.40 sobre a tarifa base de R$ 1.50/kWh. Caso o Incentivo Solar GoodWe esteja ativo (estritamente entre 10h00 e 14h00), esse fator é reduzido para 1.25 [Fonte: Escopo ChargeGrid Intelligence].",
+            "scores": {
+                "faithfulness": 1.0,
+                "answer_relevancy": 1.0,
+                "tem_citacao": true
+            }
+        }
+    ]
+}

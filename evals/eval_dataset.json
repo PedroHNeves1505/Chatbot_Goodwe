@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "pergunta": "Quais são as especificações técnicas e potência de recarga do carregador GoodWe HCA?",
+        "referencia_esperada": "O carregador possui potências monofásica de 7 kW e trifásica de 11 kW e 22 kW, operando conectado ao PowerGrid."
+    },
+    {
+        "id": 2,
+        "pergunta": "Qual é o limite de segurança de potência e o que acontece se for ultrapassado?",
+        "referencia_esperada": "O limite de segurança é 8.8 kW. Acima disso, o carregamento sofre interrupção automática para manutenção."
+    },
+    {
+        "id": 3,
+        "pergunta": "Como funciona a tarifação inteligente no horário de pico?",
+        "referencia_esperada": "No horário de pico o fator multiplicador é 1.40 sobre a tarifa base, podendo cair para 1.25 com Incentivo Solar."
+    }
+]
