@@ -2,9 +2,13 @@ import hashlib
 from langchain_core.documents import Document
 from typing import Any
 from langchain_chroma import Chroma
-from src.rag.embeddings import get_embeddings
+from .embeddings import get_embeddings
+import os
+from pathlib import Path
+from langchain_community.vectorstores import Chroma
 
-PERSIST_DIRECTORY = "db/chroma_db"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+PERSIST_DIRECTORY = os.getenv("CHROMA_DIR", str(BASE_DIR / "data" / "chroma_db"))
 
 def vector_store():
     return Chroma(
