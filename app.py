@@ -10,10 +10,10 @@ from src.guardrails.scope_validator import validar_escopo
 load_dotenv()
 
 app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
-app.secret_key = os.environ.get("OLLAMA_API_KEY")
+app.secret_key = os.environ.get("OLLAMA_API_KEY", "chave_secreta_padrao")
 
 
-def contar_tokens(texto:str, modelo:str='gpt-4') -> int:
+def contar_tokens(texto: str, modelo: str = 'gpt-4') -> int:
     enc = tiktoken.encoding_for_model(modelo)
     return len(enc.encode(texto))
 
@@ -33,11 +33,12 @@ def enviar_mensagem():
             return jsonify({"resposta": "Por favor, digite uma mensagem válida."}), 400
         
         mod_check = verificar_moderacao(mensagem_usuario)
-        if not mod_check["aprovado"]:
+        if not mod_check.get("aprovado", True):
             resposta_bloqueio = "Desculpe, não posso processar este tipo de solicitação por motivos de segurança."
             tokens_bloqueio = contar_tokens(resposta_bloqueio)
             return jsonify({
                 "resposta": resposta_bloqueio,
+                "fontes": [],
                 "tokens_pergunta": contar_tokens(mensagem_usuario),
                 "tokens_resposta": tokens_bloqueio
             }), 200
@@ -46,12 +47,10 @@ def enviar_mensagem():
             resposta_fora = "Desculpe, como assistente do ecossistema GoodWe, só posso ajudar com questões sobre ChargeGrid Intelligence e EV ChargeOps."
             return jsonify({
                 "resposta": resposta_fora,
+                "fontes": [],
                 "tokens_pergunta": contar_tokens(mensagem_usuario),
                 "tokens_resposta": contar_tokens(resposta_fora)
             }), 200
-        
-        if not mensagem_usuario:
-            return jsonify({"resposta": "Por favor, digite uma mensagem válida."}), 400
 
         if "historico" not in session:
             session["historico"] = []
@@ -68,17 +67,18 @@ def enviar_mensagem():
         resultado_chatbot = executar_chatbot(mensagem_usuario)
         
         resposta_ia = getattr(resultado_chatbot, 'resposta_final', str(resultado_chatbot))
+        fontes_ia = getattr(resultado_chatbot, 'fontes', [])
         
         tokens_pergunta = contar_tokens(mensagem_usuario)
         tokens_resposta = contar_tokens(resposta_ia)
         
-
         historico.append({"role": "user", "content": mensagem_usuario})
-        historico.append({"role": "assistant", "content": resposta_ia})
+        historico.append({"role": "assistant", "content": resposta_ia, "fontes": fontes_ia})
         session["historico"] = historico
         
         return jsonify({
             "resposta": resposta_ia,
+            "fontes": fontes_ia,
             "tokens_pergunta": tokens_pergunta,
             "tokens_resposta": tokens_resposta
         })

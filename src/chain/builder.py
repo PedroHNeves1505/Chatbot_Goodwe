@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from src.schemas.AnaliseConsulta import AnaliseConsulta
 from src.schemas.RespostaChat import RespostaChat
-from src.rag.vector_store import retrive_generator
+from src.rag.retriever import retrive_generator
 from .memoria import memoria_buffer
 import os
 from dotenv import load_dotenv
@@ -19,7 +19,7 @@ llm = ChatOllama(
     model=os.environ['OLLAMA_MODEL'],
     base_url=os.environ['OLLAMA_HOST'],
     temperature=0,
-    num_predict=256
+    num_predict=1024
 )
 
 PROMPT_ANALISE = carregar_prompt("system_prompt_analise_v2.md")
